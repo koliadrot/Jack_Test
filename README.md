@@ -1,7 +1,7 @@
 # Jack
 This is a test task. It contains a demo version for Windows.
-### Link for Android - https://disk.yandex.ru/d/dKCWG_JtCK4sSQ
-### Link for WebGl - https://play.unity.com/mg/other/jack-guvn
+### Link to Android - https://disk.yandex.ru/d/dKCWG_JtCK4sSQ
+### Link to WebGl - https://play.unity.com/mg/other/jack-guvn
 
 ![Jack_Demo_Compressed](https://user-images.githubusercontent.com/31155244/118028168-0f9cca80-b363-11eb-94c1-ce17040dfb34.gif)
 
@@ -35,7 +35,7 @@ There are interactive objects with which the character interacts through rays (R
 5 and 6 types of interactive objects are combined in one object, which will teleport to another scene,
 if the character has the required amount of experience.
 Also, all interactive objects are scaled during the project, through the user interface system (UI_Canvas) and at
-when they appear on the scene, the position coordinates are implemented in two ways:
+when they appear on the scene, ***the position coordinates are implemented in two ways:***
 1. Random
 2. ScriptableObject (InteractiveData.cs)
 
@@ -73,7 +73,7 @@ RU:
 5 и 6 типы интерактивных объектов объединены в одном объекте, которые телепортирую в другую сцену,
 при наличии необходимого количества опыта у персонажа.
 Так же все интерактивные объекты масштабируются по время проекта, через систему пользовательского интерфейса (UI_Canvas) и при 
-появлении их на сцене, координаты положения реализуются двумя способами:
+появлении их на сцене, ***координаты положения реализуются двумя способами:***
 1. Случайно
 2. ScriptableObject(InteractiveData.cs)
 

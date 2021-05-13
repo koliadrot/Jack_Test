@@ -23,6 +23,8 @@ public class Player : MonoBehaviour, IObserverable
 
     private Vector3 targetPostion;
     private Vector3 targetDirection;
+    private RaycastHit hit;
+    private Ray ray;
     private const float yPosition = 0.5f;
     private GameObject lastInterface;
 
@@ -76,17 +78,18 @@ public class Player : MonoBehaviour, IObserverable
     #region Logic Update
     private void Update()
     {
+        OnMouseClick();
         Movement();
     }
     #endregion
 
     #region GamePlay
-    private void Movement()//Movement player and interactive with objects
+
+    private void OnMouseClick()//Get information and to operation different actions by raycast
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
             {
                 if (hit.collider.CompareTag("Ground"))//Get mouse position on plane 
@@ -95,29 +98,41 @@ public class Player : MonoBehaviour, IObserverable
                 }
                 if (hit.collider.CompareTag("Interactive"))//Activate main event of interactive objects
                 {
-                    if (lastInterface != hit.collider.GetComponent<InteractiveObject>().interfaceObject.activeSelf)
-                        lastInterface.SetActive(false);
-                    if (!hit.collider.GetComponent<InteractiveObject>().interfaceObject.activeSelf)
-                    {
-                        lastInterface = hit.collider.GetComponent<InteractiveObject>().interfaceObject;
-                        hit.collider.GetComponent<InteractiveObject>().interfaceObject.SetActive(true);
-                    }
-                    else
-                        hit.collider.GetComponent<InteractiveObject>().OnAcionInteraction();
+                    Interaction();
                 }
             }
         }
-        if (Input.GetMouseButtonDown(1))//Switch off last interface of interactive object
+        else if (Input.GetMouseButtonDown(1))//Switch off last interface of interactive object
         {
             if (lastInterface != null)
                 lastInterface.SetActive(false);
         }
+    }
+    private void Movement()//Movement player
+    {
         targetDirection = targetPostion - player.position;
         if (Vector3.SqrMagnitude(targetDirection) > 0.1f && targetPostion != Vector3.zero)//Movement player to last point of mouse
         {
             player.rotation = Quaternion.Slerp(player.rotation, Quaternion.LookRotation(targetDirection), speedRotation * Time.deltaTime);//Rotation with Slerp
             player.position = Vector3.MoveTowards(player.position, targetPostion, speedMovement * Time.deltaTime);
         }
+    }
+    private void Interaction()//Interact with other different objects
+    {
+        if (lastInterface != hit.collider.GetComponent<InteractiveObject>().interfaceObject.activeSelf)
+        {
+            lastInterface.SetActive(false);
+        }
+        if (!hit.collider.GetComponent<InteractiveObject>().interfaceObject.activeSelf)
+        {
+            lastInterface = hit.collider.GetComponent<InteractiveObject>().interfaceObject;
+            hit.collider.GetComponent<InteractiveObject>().interfaceObject.SetActive(true);
+        }
+        else
+        {
+            hit.collider.GetComponent<InteractiveObject>().OnAcionInteraction();
+        }
+            
     }
     private void GameOver()
     {
