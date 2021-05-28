@@ -8,11 +8,6 @@ using System;
 public class ExperienceInteractive : InteractiveObject
 {
     #region Field Declarations
-
-    public event Action InteractiveAction = () => { };
-
-    [SerializeField] private bool experience = true;
-    [SerializeField] private Toggle experienceBox;
     [SerializeField] private int exp = 1;
     [SerializeField] private TMP_InputField expField;
 
@@ -25,15 +20,6 @@ public class ExperienceInteractive : InteractiveObject
             expField.text = exp.ToString();
         }
     }
-    public bool Experience
-    {
-        get => experience;
-        set
-        {
-            experience = value;
-            SubscribeOnExperience(Experience);
-        }
-    }
     #endregion
 
     #region Startup
@@ -41,23 +27,15 @@ public class ExperienceInteractive : InteractiveObject
     {
         base.Start();
         expField.text = exp.ToString();
-        experienceBox.isOn = experience;
-        interfaceObject.transform.GetChild(2).gameObject.SetActive(true);
         expField.onValueChanged.AddListener(OnExperienceFieldChanged);//Add method on InputField--->
         expField.onEndEdit.AddListener(OnExperienceFieldChanged);//<---
-        experienceBox.onValueChanged.AddListener((bool status) => OnExperienceChanged());//Add method on checkBox
     }
     #endregion
 
     #region Subject Implementation
 
     #region Subscribe Methods
-    private void OnExperienceChanged()//Method for switch on or switch off in the game
-    {
-        Experience = experienceBox.isOn;
-    }
-
-    private void SubscribeOnExperience(bool status)//Subscribe or unsubscribe at/from event
+    protected override void SubscribeOnAction(bool status)//Subscribe or unsubscribe at/from event
     {
         if (status)
             InteractiveAction += OnExperienceAction;
@@ -67,14 +45,9 @@ public class ExperienceInteractive : InteractiveObject
     #endregion
 
     #region Actions
-    public override void OnAcionInteraction()//Main action of event
-    {
-        InteractiveAction();
-    }
-
     private void OnExperienceAction()//Method for call outside
     {
-        player.Experience += Exp;
+        GameSceneController.Instance.OnSetExperienceChange(Exp);
     }
     #endregion
 
@@ -88,27 +61,11 @@ public class ExperienceInteractive : InteractiveObject
     }
     #endregion
 
-    #region Collisions
-    protected override void OnTriggerEnter(Collider other)//Activate, when object to come in zone
-    {
-        base.OnTriggerEnter(other);
-        if (other.CompareTag("Player"))
-            SubscribeOnExperience(Experience);//Subscribe actions at event
-    }
-
-    protected override void OnTriggerExit(Collider other)//Activate, when object to come out zone
-    {
-        base.OnTriggerExit(other);
-        if (other.CompareTag("Player"))
-            SubscribeOnExperience(false);//Unsubscribe actions from event
-    }
-    #endregion
-
     #region Observer Action
     public override void Notify()
     {
         base.Notify();
-    }
+    }    
     #endregion
 
     #endregion

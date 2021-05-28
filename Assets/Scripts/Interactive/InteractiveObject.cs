@@ -5,13 +5,15 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
-public class InteractiveObject : MonoBehaviour, IObserverable
+public abstract class InteractiveObject : MonoBehaviour, IObserverable, ICollisionable
 {
     #region Field Declarations
-    public GameObject interfaceObject;
-    protected Player player;
+    public event Action InteractiveAction = () => { };
 
+    public GameObject interfaceObject;
+    [SerializeField] protected Toggle activateBox;
     [SerializeField] protected MeshRenderer indicateArea;
+    protected bool playerEntered;
     #endregion
 
     #region Startup
@@ -23,25 +25,35 @@ public class InteractiveObject : MonoBehaviour, IObserverable
 
     #region Subject Implementation
 
+    #region Subscribe Methods
+    protected abstract void SubscribeOnAction(bool status);//Subscribe or unsubscribe at/from event
+    #endregion
+
     #region Actions
-    public virtual void OnAcionInteraction() { }//Method for call outside
+    public virtual void OnAcionInteraction()//Method for call outside
+    {
+        if (playerEntered && activateBox.isOn)
+            InteractiveAction();
+    }
     #endregion
 
     #region Collisions
-    protected virtual void OnTriggerEnter(Collider other)//Activate, when object to come in zone
+    public virtual void OnTriggerEnter(Collider other)//Activate, when object to come in zone
     {
         if (other.CompareTag("Player"))
         {
-            indicateArea.material.color=Color.white;
-            player = other.GetComponent<Player>();
+            indicateArea.material.color = Color.white;
+            playerEntered = true;
+            SubscribeOnAction(true);//Subscribe actions at event
         }
     }
-    protected virtual void OnTriggerExit(Collider other)//Activate, when object to come out zone
+    public virtual void OnTriggerExit(Collider other)//Activate, when object to come out zone
     {
         if (other.CompareTag("Player"))
         {
             indicateArea.material.color = Color.grey;
-            player = null;
+            playerEntered = false;
+            SubscribeOnAction(false);//Unsubscribe actions from event
         }
     }
     #endregion

@@ -8,10 +8,6 @@ using System;
 public class HitInteractive : InteractiveObject
 {
     #region Field Declarations
-    public event Action InteractiveAction = () => { };
-
-    [SerializeField] private bool hit = true;
-    [SerializeField] private Toggle hitBox;
     [SerializeField] private int hitValue = 2;
     [SerializeField] private TMP_InputField hitField;
 
@@ -24,15 +20,6 @@ public class HitInteractive : InteractiveObject
             hitField.text = hitValue.ToString();
         }
     }
-    public bool Hit
-    {
-        get => hit;
-        set
-        {
-            hit = value;
-            SubscribeOnHit(Hit);
-        }
-    }
     #endregion
 
     #region Startup
@@ -40,22 +27,15 @@ public class HitInteractive : InteractiveObject
     {
         base.Start();
         hitField.text = hitValue.ToString();
-        hitBox.isOn = hit;
-        interfaceObject.transform.GetChild(3).gameObject.SetActive(true);
         hitField.onValueChanged.AddListener(OnHitFieldChanged);//Add method on InputField--->
         hitField.onEndEdit.AddListener(OnHitFieldChanged);//<---
-        hitBox.onValueChanged.AddListener((bool status) => OnHitChanged());//Add method on checkBox
     }
     #endregion
 
     #region Subject Implementation
 
-    #region Subscribe Methods
-    private void OnHitChanged()//Method for switch on or switch off in the game
-    {
-        Hit = hitBox.isOn;
-    }
-    private void SubscribeOnHit(bool status)//Subscribe or unsubscribe at/from event
+    #region Subscribe Methods    
+    protected override void SubscribeOnAction(bool status)//Subscribe or unsubscribe at/from event
     {
         if (status)
             InteractiveAction += OnHitAction;
@@ -64,15 +44,10 @@ public class HitInteractive : InteractiveObject
     }
     #endregion
 
-    #region Subscribe Methods
+    #region Actions
     private void OnHitAction()//Main action of event
     {
-        player.Health -= HitValue;
-    }
-    public override void OnAcionInteraction()//Method for call outside
-    {
-        if (player != null)
-            InteractiveAction();
+        GameSceneController.Instance.OnSetHealthChange(HitValue);
     }
     #endregion
 
@@ -83,21 +58,6 @@ public class HitInteractive : InteractiveObject
             HitValue = int.Parse(hitValueIn);
         else
             HitValue = 0;
-    }
-    #endregion
-
-    #region Collisions
-    protected override void OnTriggerEnter(Collider other)//Activate, when object to come in zone
-    {
-        base.OnTriggerEnter(other);
-        if (other.CompareTag("Player"))
-            SubscribeOnHit(Hit);//Subscribe actions at event
-    }
-    protected override void OnTriggerExit(Collider other)//Activate, when object to come out zone
-    {
-        base.OnTriggerExit(other);
-        if (other.CompareTag("Player"))
-            SubscribeOnHit(false);//Unsubscribe actions from event
     }
     #endregion
 

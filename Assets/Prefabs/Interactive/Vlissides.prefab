@@ -110,10 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6ab8a67fb600a45876ed234d681f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interfaceObject: {fileID: 8583784304643110103}
+  interfaceObject: {fileID: 4665709317008761042}
+  activateBox: {fileID: 7618323639862669339}
   indicateArea: {fileID: 2724969481122681772}
-  hit: 1
-  hitBox: {fileID: 7618323639862669339}
   hitValue: 2
   hitField: {fileID: 4428842569692762070}
 --- !u!54 &6261366694850686178
@@ -344,15 +343,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69529ad92965e56429d00b55f3eb0535, type: 3}
---- !u!1 &8583784304643110103 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4896500800174137851, guid: 69529ad92965e56429d00b55f3eb0535,
-    type: 3}
-  m_PrefabInstance: {fileID: 3813537128971293996}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2970701232278299256 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2150023349501933396, guid: 69529ad92965e56429d00b55f3eb0535,
+    type: 3}
+  m_PrefabInstance: {fileID: 3813537128971293996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4665709317008761042 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8382195301226739198, guid: 69529ad92965e56429d00b55f3eb0535,
     type: 3}
   m_PrefabInstance: {fileID: 3813537128971293996}
   m_PrefabAsset: {fileID: 0}

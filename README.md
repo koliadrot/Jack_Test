@@ -10,7 +10,7 @@ EN:
 ## This is a test project with top-down mechanics.
 
 ***The project used such design patterns as:***
-* Factory
+* Object pool
 * Observer
 * Singleton
 
@@ -37,7 +37,7 @@ if the character has the required amount of experience.
 Also, all interactive objects are scaled during the project, through the user interface system (UI_Canvas) and at
 when they appear on the scene, ***the position coordinates are implemented in two ways:***
 1. Random
-2. ScriptableObject (InteractiveData.cs)
+2. ScriptableObject (InteractiveData.cs, PlayerData.cs)
 
 Interactive objects have an interactivity zone that displays the interaction of the character with this interactive object.
 For clarity, the interactivity zone was made visible as a flat area and changed color upon interaction.
@@ -48,7 +48,7 @@ RU:
 ## Это тестовый проект с top-down механикой.
 
 ***В проекте были использованы такие паттерны проектировании как:***
-* Фабрика
+* Бассейн объектов
 * Наблюдатель
 * Одиночка
 
@@ -75,7 +75,7 @@ RU:
 Так же все интерактивные объекты масштабируются по время проекта, через систему пользовательского интерфейса (UI_Canvas) и при 
 появлении их на сцене, ***координаты положения реализуются двумя способами:***
 1. Случайно
-2. ScriptableObject(InteractiveData.cs)
+2. ScriptableObject(InteractiveData.cs , PlayerData.cs)
 
 У интерактивных объектов имеется зона интерактивности, которая отображает взаимодействие персонажа с данным интерактивным объектом.
 Для наглядности, зона интерактивности была сделана видимой в виде плоской площади и изменяла цвет, при взаимодействии.

@@ -8,6 +8,14 @@ public class GameSceneController : Singleton<GameSceneController>
     #region Field Declarations
     private List<IObserverable> observers = new List<IObserverable>();
 
+    [Header("Player")]
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private PlayerData startPlayerData;
+    private Transform playerTransform;
+    private PlayerPresenter playerPresenter;
+    private PlayerModel playerModel;
+
     [Header("Environment")]
     [SerializeField] private Transform ground;
     public float GroundX => Mathf.Pow(ground.localScale.x, 2f) * 0.9f;
@@ -43,6 +51,7 @@ public class GameSceneController : Singleton<GameSceneController>
     private void Start()
     {
         CreatePool();
+        CreatePlayer();
     }
     private void CreatePool()//Create pool spawn objects
     {
@@ -71,21 +80,88 @@ public class GameSceneController : Singleton<GameSceneController>
             }
         }
     }
+    private void CreatePlayer()//Create player with setting data
+    {
+        playerModel = new PlayerModel(startPlayerData);
+        playerTransform = Instantiate(playerPrefab, startPlayerData.currentPosition, startPlayerData.currentRotation).transform;
+        PlayerView playerView = playerTransform.GetComponent<PlayerView>();
+        playerPresenter = new PlayerPresenter(playerView, playerModel);
+        OnSetHealthChange(0);
+        OnSetExperienceChange(0);
+        if (startPlayerData.scene != SceneManager.GetActiveScene().name)
+            LoadScene(startPlayerData.scene);
+    }
     #endregion
 
     #region Subject Implementation
+
+    #region Logic Update
+    private void Update()
+    {
+        playerModel.OnMouseClick(mainCamera);
+        playerModel.Movement(playerTransform);
+    }
+    #endregion
+
+    #region Gameplay
+    public void Teleport(string scene)//Load current player position and another scene
+    {
+        if (SceneManager.GetActiveScene().name == "Local 2")
+        {
+            SavePlayerData("Local 1");
+            startPlayerData.currentPosition = startPlayerData.localPosition[0];
+        }
+        else
+        {
+            SavePlayerData("Local 2");
+            startPlayerData.currentPosition = startPlayerData.localPosition[1];
+        }
+        LoadScene(scene);
+    }
+    #endregion
+
+    #region Player Methods
+    public void OnSetHealthChange(int damage)//Change player health
+    {
+        playerModel.SetNewHealth(damage);
+    }
+    public void OnSetExperienceChange(int exp)//Change player experience
+    {
+        playerModel.SetExperiencePoint(exp);
+    }
+    public int OnGetExperiencePoint()//Get player experience
+    {
+        return playerModel.GetExperiencePoint();
+    }
+    #endregion
+
+    #region Load and Save
+    private void SavePlayerData(string sceneName)//Save current player data
+    {
+        startPlayerData.experience = playerModel.GetExperiencePoint();
+        startPlayerData.health = playerModel.GetHealthPoint();
+        startPlayerData.speedMovement = playerModel.GetSpeedMovement();
+        startPlayerData.speedRotation = playerModel.GetSpeedRotation();
+        startPlayerData.mask = playerModel.GetMask();
+        startPlayerData.currentPosition = playerTransform.position;
+        startPlayerData.currentRotation = playerTransform.rotation;
+        startPlayerData.scene = sceneName;
+    }
+    private void LoadScene(string scene)//Load other scene
+    {
+        SceneManager.LoadScene(scene);
+    }
+    #endregion
 
     #region Observer
     public void AddObserver(IObserverable observer)//Add observable subscriber
     {
         observers.Add(observer);
     }
-
     public void RemoveObserver(IObserverable observer)//Remove observable subscriber
     {
         observers.Remove(observer);
     }
-
     public void EndGameNotifyObservers()//Send notification about start action observables subscribers
     {
         foreach (IObserverable observer in observers)
@@ -98,7 +174,7 @@ public class GameSceneController : Singleton<GameSceneController>
     #region Application
     private void OnApplicationQuit()
     {
-        PlayerPrefs.DeleteAll();
+        SavePlayerData(SceneManager.GetActiveScene().name);
     }
     #endregion
 

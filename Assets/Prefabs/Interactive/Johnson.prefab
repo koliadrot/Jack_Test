@@ -110,10 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5564c4c1e5f56f2489cbe6943a126d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interfaceObject: {fileID: 8989731374795004930}
+  interfaceObject: {fileID: 8595921744905649865}
+  activateBox: {fileID: 8450958664962628687}
   indicateArea: {fileID: 2724969481122681772}
-  experience: 1
-  experienceBox: {fileID: 8450958664962628687}
   exp: 1
   expField: {fileID: 5282425466524570750}
 --- !u!54 &6261366694850686178
@@ -344,15 +343,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69529ad92965e56429d00b55f3eb0535, type: 3}
---- !u!1 &8989731374795004930 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4896500800174137851, guid: 69529ad92965e56429d00b55f3eb0535,
-    type: 3}
-  m_PrefabInstance: {fileID: 4553751130216906233}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2514211865375476397 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2150023349501933396, guid: 69529ad92965e56429d00b55f3eb0535,
+    type: 3}
+  m_PrefabInstance: {fileID: 4553751130216906233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8595921744905649865 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5222194033487807280, guid: 69529ad92965e56429d00b55f3eb0535,
     type: 3}
   m_PrefabInstance: {fileID: 4553751130216906233}
   m_PrefabAsset: {fileID: 0}

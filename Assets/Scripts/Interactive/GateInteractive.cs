@@ -8,14 +8,9 @@ using System;
 public class GateInteractive : InteractiveObject
 {
     #region Field Declarations
-    public event Action InteractiveAction = () => { };
-
-    [SerializeField] private bool gate = true;
-    [SerializeField] private Toggle gateBox;
     [SerializeField] private int expGate = 5;
     [SerializeField] private TMP_InputField expGateField;
     [SerializeField] private GameObject teleportObject;
-
 
     public int ExpGate
     {
@@ -27,15 +22,6 @@ public class GateInteractive : InteractiveObject
             CheckExperience(true);
         }
     }
-    public bool Gate
-    {
-        get => gate;
-        set
-        {
-            gate = value;
-            SubscribeOnGate(Gate);
-        }
-    }
     #endregion
 
     #region Startup
@@ -43,22 +29,15 @@ public class GateInteractive : InteractiveObject
     {
         base.Start();
         expGateField.text = expGate.ToString();
-        gateBox.isOn = gate;
-        interfaceObject.transform.GetChild(4).gameObject.SetActive(true);
         expGateField.onValueChanged.AddListener(OnGateExperienceFieldChanged);//Add method on InputField--->
         expGateField.onEndEdit.AddListener(OnGateExperienceFieldChanged);//<---
-        gateBox.onValueChanged.AddListener((bool status) => OnGateExperienceChanged());//Add method on checkBox
     }
     #endregion
 
     #region Subject Implementation
 
     #region Subscribe Methods
-    private void OnGateExperienceChanged()//Method for switch on or switch off in the game
-    {
-        Gate = gateBox.isOn;
-    }
-    private void SubscribeOnGate(bool status)//Subscribe or unsubscribe at/from event
+    protected override void SubscribeOnAction(bool status)//Subscribe or unsubscribe at/from event
     {
         if (status)
             InteractiveAction += OnGateAction;
@@ -70,17 +49,13 @@ public class GateInteractive : InteractiveObject
     #region Actions
     private void OnGateAction()//Main action of event
     {
-        if (expGate <= player.Experience)
+        if (expGate <= GameSceneController.Instance.OnGetExperiencePoint())
             teleportObject.SetActive(true);
-    }
-    public override void OnAcionInteraction()//Method for call outside
-    {
-        InteractiveAction();
     }
     #endregion
 
     #region UI
-    public void OnGateExperienceFieldChanged(string expGateIn)//Set value of necessary experience
+    private void OnGateExperienceFieldChanged(string expGateIn)//Set value of necessary experience
     {
         if (int.Parse(expGateIn) > 0)
             ExpGate = int.Parse(expGateIn);
@@ -90,29 +65,27 @@ public class GateInteractive : InteractiveObject
     #endregion
 
     #region Collisions
-    protected override void OnTriggerEnter(Collider other)//Activate, when object to come in zone
+    public override void OnTriggerEnter(Collider other)//Activate, when object to come in zone
     {
         base.OnTriggerEnter(other);
         if (other.CompareTag("Player"))
         {
-            SubscribeOnGate(Gate);//Subscribe actions at event
             CheckExperience(true);
         }
     }
-    protected override void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)//Activate, when object to come out zone
     {
+        base.OnTriggerExit(other);
         if (other.CompareTag("Player"))
         {
-            SubscribeOnGate(false);//Unsubscribe actions from event
             CheckExperience(false);
         }
-        base.OnTriggerExit(other);
     }
     private void CheckExperience(bool entrance)//Compare necessary exp with exp of player
     {
         if (entrance)
         {
-            if (expGate > player.Experience)
+            if (expGate > GameSceneController.Instance.OnGetExperiencePoint())
             {
                 indicateArea.material.color = Color.red;//Switch on Indicate that necessary more experience
                 teleportObject.SetActive(false);
@@ -122,7 +95,7 @@ public class GateInteractive : InteractiveObject
         }
         else
         {
-            if (expGate <= player.Experience)
+            if (expGate <= GameSceneController.Instance.OnGetExperiencePoint())
             {
                 teleportObject.SetActive(false);
             }
@@ -134,7 +107,7 @@ public class GateInteractive : InteractiveObject
     public override void Notify()
     {
         base.Notify();
-    }
+    }    
     #endregion
 
     #endregion

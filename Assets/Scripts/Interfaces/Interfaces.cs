@@ -3,18 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMoveable
+public interface ICollisionable
 {
-    void Move();
-    void Acceleration();
-}
-public interface ICommandable
-{
-    void Replay();
+    void OnTriggerEnter(Collider other);
+    void OnTriggerExit(Collider other);
 }
 public interface IObserverable
 {
     void Notify();
-
 }
 

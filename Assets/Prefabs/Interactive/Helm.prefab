@@ -110,10 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75e768af4077b24eadc63cfd64041cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interfaceObject: {fileID: 3345495260591549893}
+  interfaceObject: {fileID: 5893912150134732887}
+  activateBox: {fileID: 3810444440842280582}
   indicateArea: {fileID: 2724969481122681772}
-  destroyable: 1
-  destroyableBox: {fileID: 3810444440842280582}
   health: 10
   healthField: {fileID: 798931408720503797}
   damage: 1
@@ -346,15 +345,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69529ad92965e56429d00b55f3eb0535, type: 3}
---- !u!1 &3345495260591549893 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4896500800174137851, guid: 69529ad92965e56429d00b55f3eb0535,
-    type: 3}
-  m_PrefabInstance: {fileID: 7898834076566834238}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8090753454628141930 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2150023349501933396, guid: 69529ad92965e56429d00b55f3eb0535,
+    type: 3}
+  m_PrefabInstance: {fileID: 7898834076566834238}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5893912150134732887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4347427614209078377, guid: 69529ad92965e56429d00b55f3eb0535,
     type: 3}
   m_PrefabInstance: {fileID: 7898834076566834238}
   m_PrefabAsset: {fileID: 0}
